@@ -1,0 +1,37 @@
+{
+  "name": "hki-kaupunginosat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.1",
+    "nodemon": "^1.12.1"
+  },
+  "scripts": {
+    "start": "nodemon index.js",
+    "precommit": "lint-staged",
+    "deploy": "now -e NODE_ENV=production --public"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --single-quote --trailing-comma all --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-config-motley": "^7.3.0",
+    "eslint-config-prettier": "2.1.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-react": "^7.0.1",
+    "husky": "^0.13.3",
+    "lint-staged": "^3.4.2",
+    "prettier": "^1.5.0"
+  },
+  "description": "Helsinki districts on a map, based on Helsinki open data",
+  "repository": "asdf",
+  "author": "Fredrik Boström <fredrik.bostrom@iki.fi>"
+}

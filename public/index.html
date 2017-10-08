@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WFS - GetFeature</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.4.1/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.4.1/build/ol.js"></script>
+    <style type="text/css">
+      #map {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+      var vectorSource = new ol.source.Vector();
+      var vector = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: 'rgba(0, 0, 255, 1.0)',
+            width: 2
+          })
+        })
+      });
+
+
+      var osm = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      })
+
+      var map = new ol.Map({
+        layers: [osm, vector],
+        target: document.getElementById('map'),
+        view: new ol.View({
+          center: [2776542.092198354, 8436613.173180755],
+          zoom: 13,
+          maxZoom: 19,
+        })
+      });
+
+      // generate a GetFeature request
+      var featureRequest = new ol.format.WFS().writeGetFeature({
+        srsName: 'EPSG:3857',
+        // featureNS: 'http://kartta.hel.fi/ws/geoserver/avoindata/wfs',
+        // featurePrefix: 'avoindata',
+        featureTypes: ['Kaupunginosajako'],
+        outputFormat: 'json',
+        // filter: ol.format.filter.and(
+        //     ol.format.filter.like('name', 'Mississippi*'),
+        //     ol.format.filter.equalTo('waterway', 'riverbank')
+        // )
+      });
+
+      // then post the request and add the received features to a layer
+      fetch('https://kartta.hel.fi/ws/geoserver/avoindata/wfs', {
+        method: 'POST',
+        body: new XMLSerializer().serializeToString(featureRequest)
+      }).then(function(response) {
+        return response.json();
+      }).then(function(json) {
+        var features = new ol.format.GeoJSON().readFeatures(json);
+        vectorSource.addFeatures(features);
+        // map.getView().fit(vectorSource.getExtent());
+      });
+    </script>
+  </body>
+</html>
