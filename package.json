@@ -32,6 +32,6 @@
     "prettier": "^1.5.0"
   },
   "description": "Helsinki districts on a map, based on Helsinki open data",
-  "repository": "asdf",
+  "repository": "https://github.com/bostrom/helsinki-districts",
   "author": "Fredrik Boström <fredrik.bostrom@iki.fi>"
 }
